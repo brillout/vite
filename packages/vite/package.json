@@ -1,6 +1,10 @@
 {
-  "name": "vite",
-  "version": "5.3.0-beta.0",
+  "name": "@brillout/vite",
+  "version": "5.3.0-commit-42fd11c",
+  "// version": "5.3.0-pr-12030",
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "license": "MIT",
   "author": "Evan You",
@@ -81,7 +85,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint --cache --ext .ts src/**",
     "format": "prettier --write --cache --parser typescript \"src/**/*.ts\"",
-    "prepublishOnly": "npm run build"
+    "// prepublishOnly": "npm run build"
   },
   "//": "READ CONTRIBUTING.md to understand what to put under deps vs. devDeps!",
   "dependencies": {
