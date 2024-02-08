@@ -21,6 +21,7 @@ on:
       - feat/*
       - fix/*
       - perf/*
+      - brillout/*
       - v1
       - v2
       - v2.*
