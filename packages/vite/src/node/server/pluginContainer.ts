@@ -340,6 +340,7 @@ class EnvironmentPluginContainer {
        */
       scan?: boolean
       isEntry?: boolean
+      isDynamicImport: boolean
     },
   ): Promise<PartialResolvedId | null> {
     if (!this._started) {
@@ -556,6 +557,7 @@ class PluginContext implements Omit<RollupPluginContext, 'cache'> {
       custom?: CustomPluginOptions
       isEntry?: boolean
       skipSelf?: boolean
+      isDynamicImport?: boolean
     },
   ) {
     let skip: Set<Plugin> | undefined
@@ -567,6 +569,7 @@ class PluginContext implements Omit<RollupPluginContext, 'cache'> {
       attributes: options?.attributes,
       custom: options?.custom,
       isEntry: !!options?.isEntry,
+      isDynamicImport: !!options?.isDynamicImport,
       skip,
       scan: this._scan,
     })
@@ -1005,9 +1008,13 @@ class PluginContainer {
        */
       scan?: boolean
       isEntry?: boolean
+      isDynamicImport?: boolean
     },
   ): Promise<PartialResolvedId | null> {
-    return this._getPluginContainer(options).resolveId(rawId, importer, options)
+    return this._getPluginContainer(options).resolveId(rawId, importer, {
+      isDynamicImport: false,
+      ...options,
+    })
   }
 
   async load(

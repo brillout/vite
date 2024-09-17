@@ -77,7 +77,10 @@ export function createIdResolver(
       )
       pluginContainerMap.set(environment, pluginContainer)
     }
-    return await pluginContainer.resolveId(id, importer, { scan })
+    return await pluginContainer.resolveId(id, importer, {
+      isDynamicImport: false,
+      scan,
+    })
   }
 
   const aliasOnlyPluginContainerMap = new Map<
@@ -97,7 +100,10 @@ export function createIdResolver(
       )
       aliasOnlyPluginContainerMap.set(environment, pluginContainer)
     }
-    return await pluginContainer.resolveId(id, importer, { scan })
+    return await pluginContainer.resolveId(id, importer, {
+      isDynamicImport: false,
+      scan,
+    })
   }
 
   return async (environment, id, importer, aliasOnly) => {

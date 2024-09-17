@@ -378,6 +378,7 @@ function esbuildScanPlugin(
       id,
       importer && normalizePath(importer),
       {
+        isDynamicImport: false,
         ...options,
         scan: true,
       },

@@ -322,7 +322,8 @@ export function importAnalysisPlugin(config: ResolvedConfig): Plugin {
       const normalizeUrl = async (
         url: string,
         pos: number,
-        forceSkipImportAnalysis: boolean = false,
+        isDynamicImport: boolean,
+        forceSkipImportAnalysis: boolean,
       ): Promise<[string, string]> => {
         url = stripBase(url, base)
 
@@ -346,7 +347,9 @@ export function importAnalysisPlugin(config: ResolvedConfig): Plugin {
           }
         }
 
-        const resolved = await this.resolve(url, importerFile)
+        const resolved = await this.resolve(url, importerFile, {
+          isDynamicImport,
+        })
 
         if (!resolved || resolved.meta?.['vite:alias']?.noResolved) {
           // in ssr, we should let node handle the missing modules
@@ -540,7 +543,12 @@ export function importAnalysisPlugin(config: ResolvedConfig): Plugin {
             }
 
             // normalize
-            const [url, resolvedId] = await normalizeUrl(specifier, start)
+            const [url, resolvedId] = await normalizeUrl(
+              specifier,
+              start,
+              isDynamicImport,
+              false,
+            )
 
             // record as safe modules
             // safeModulesPath should not include the base prefix.
@@ -762,7 +770,7 @@ export function importAnalysisPlugin(config: ResolvedConfig): Plugin {
         if (pluginImports) {
           ;(
             await Promise.all(
-              [...pluginImports].map((id) => normalizeUrl(id, 0, true)),
+              [...pluginImports].map((id) => normalizeUrl(id, 0, false, true)),
             )
           ).forEach(([url]) => importedUrls.add(url))
         }
